@@ -1,0 +1,83 @@
+public class BinarySearchTree extends AbstractBinarySearchTree{ 
+
+	@Override
+	void insert(BinaryTreeNode current, int aValue) {
+
+		if (aValue < current.value) {
+			if (current.left != null) {
+
+				insert(current.left, aValue);
+			}else { 
+				current.left = new BinaryTreeNode(aValue);
+			}
+		}else if (aValue > current.value) { 
+			if (current.right != null) {
+				insert(current.right, aValue);
+			}else {
+				current.right = new BinaryTreeNode(aValue);
+			}
+		}
+	}
+
+
+	@Override
+	int calcHeight(BinaryTreeNode current) {
+		int leftHeight=0, rightHeight=0;
+
+		if(current == null) {
+			return 0;
+		}else {
+			leftHeight= calcHeight(current.left);
+			rightHeight = calcHeight(current.right);
+
+			if (leftHeight >= rightHeight) {
+				return 1 + leftHeight;
+			}else {
+				return 1 + rightHeight;
+			}
+		}
+
+	}
+
+	@Override
+	void inOrder(BinaryTreeNode current) {
+		if (current != null) {
+			inOrder(current.left);
+			System.out.println(current.value);
+			inOrder(current.right);
+		}
+	}
+
+	@Override
+	void preOrder(BinaryTreeNode current) {
+		if(current != null) {
+			System.out.println(current.value);
+			preOrder(current.left);
+			preOrder(current.right);
+		}
+	}
+
+	@Override
+	void postOrder(BinaryTreeNode current) {
+		if (current != null) {
+			postOrder(current.left);
+			postOrder(current.right);
+			System.out.println(current.value);
+		}
+	}
+
+	/*
+	 * The following 2 methods are for bonus points only
+	 */
+	//If a child node doesn't exist, print the string 'null' for that node
+	//Remember you're printing in this, NOT returning a string
+	void printChildren(int aValue) {
+
+	}
+
+	//If a parent doesn't exist, print the string 'null' for that node
+	//Remember you're printing in this, NOT returning a string
+	void printParent(BinaryTreeNode node, int aValue) {
+
+	}
+}// end BinaryTree

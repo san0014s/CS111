@@ -1,0 +1,79 @@
+
+public class Stack<T> implements StackInterface<T> {
+
+	private class Node{
+		T value;
+		Node next;
+
+	}
+
+	public Stack() {
+
+	}
+
+	Node top;
+	int size;
+
+
+	@Override
+	public boolean isFull() {
+		return false;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		if(size==0) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void push(T newValue) {
+		Node tempPush = new Node(); 
+			tempPush.value = newValue; 
+			tempPush.next = top; 
+			top = tempPush; 
+			size++;
+		}
+
+
+	@Override
+	public T pop() {
+		if (top == null) { 
+			throw new StackException("The Stack is empty.");
+		} 
+
+		top = (top).next;
+		size--;
+		return (T) top;
+
+	}
+
+	@Override
+	public int size() {
+		return size;
+	}
+
+	@Override
+	public int getMaxSize() {
+		return Integer.MAX_VALUE;
+	}
+
+	public String toString() {
+		String s = "[";
+		Node n = top;
+		while (n != null) {
+			s += n.value + ", ";
+			n = n.next;
+		}
+		if(s.length() > 1) {
+			s = s.substring(0, s.length()-2);
+		}
+		s += "]";
+		return s;
+	}
+
+
+
+}

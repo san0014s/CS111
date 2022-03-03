@@ -1,0 +1,265 @@
+import java.util.Scanner;
+
+public class Life {
+
+	//DATA MEMBERS
+	private int [][] theBoard;
+	private int rows;
+	private int column;
+	private int free;
+	private int beingBorn;
+	private int dying;
+	private int occupied;
+
+
+
+
+	//CONSTRUCTOR
+	public Life() {
+		this.theBoard = new int[10][10];
+		this.rows = 10;
+		this.column = 10;
+		this.free = 0;
+		this.beingBorn = 1;
+		this.dying = 2;
+		this.occupied = 3;
+	}
+
+	public Life(int row, int col) {
+		this.theBoard = new int[row][col];
+		this.rows = row;//refers to the row in the board
+		this.column = col;
+		this.free = 0;
+		this.beingBorn = 1;
+		this.dying = 2;
+		this.occupied = 3;
+
+	}
+
+	//ACCESSORS
+	public boolean isFree(int r, int c) {
+		if(this.theBoard[r][c] == this.free) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isOccupied(int r, int c) {
+		if(this.theBoard[r][c] == this.occupied) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isDying(int r, int c) {
+		if(this.theBoard[r][c] == this.dying) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isBorn(int r, int c) {
+		if(this.theBoard[r][c] == this.beingBorn) {
+			return true;
+		}
+		return false;
+	}
+
+	private int countNeighbors(int r, int c) {
+		int count=0;
+
+		if(((r+1) >= 0) && ((c+1) >= 0) && ((r+1)<this.rows) && ((c+1)<this.column)) {
+			if (this.isOccupied(r+1, c+1) || this.isDying(r+1, c+1)) {
+				count++;
+			}
+		}
+
+
+		if(r-1 >= 0 && c-1 >= 0 && r-1<this.rows && c-1<this.column) {
+			if (this.isOccupied(r-1, c-1) || this.isDying(r-1, c-1)) {
+				count++;
+			}
+		}
+
+
+		if(r+1 >=0 && c-1 >= 0 && r+1<this.rows && c-1<this.column) {
+			if (this.isOccupied(r+1, c-1) || this.isDying(r+1, c-1)) {
+				count++;
+			}
+		}
+
+		if(r-1 >= 0 && c+1 >= 0 && r-1<this.rows && c+1<this.column) {
+			if (this.isOccupied(r-1, c+1) || this.isDying(r-1, c+1)) {
+				count++;
+			}
+		}
+
+		if(r+1 >= 0 && r+1<this.rows) {
+			if(this.isOccupied(r+1, c) || this.isDying(r+1, c)) {
+				count++;
+			}
+		}
+
+		if(r-1 >= 0 && r-1<this.rows) {
+			if(this.isOccupied(r-1, c) || this.isDying(r-1, c)) {
+				count++;
+			}
+		}
+
+		if(c+1 >= 0 && c+1<this.column) {
+			if(this.isOccupied(r, c+1) || this.isDying(r, c+1)) {
+				count++;
+			}
+		}
+
+		if(c-1 >= 0 && c-1<this.column) {
+			if(this.isOccupied(r, c-1) || this.isDying(r, c-1)) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	//MUTATOR
+	public void setBorn(int r, int c) {
+		this.theBoard[r][c] = beingBorn;
+	}
+
+	public void setOccupied(int r, int c) {
+		this.theBoard[r][c] = occupied;
+	}
+
+	public void setDying(int r, int c) {
+		this.theBoard[r][c] = dying;
+	}
+
+	public void setFree(int r, int c) {
+		this.theBoard[r][c] = free;
+	}
+
+	public void clearBoard() {
+		for(int r=0; r<this.rows;r++) {
+			for(int c=0; c<this.column; c++) {
+				this.theBoard[r][c] = free;
+			}
+		}
+	}
+
+	public void fillBoard(Scanner inputFile) throws InterruptedException{
+
+		while(inputFile.hasNext()) {
+			int row = inputFile.nextInt();
+			int col = inputFile.nextInt();
+			setOccupied(row, col);
+
+		}
+		setCanvas();
+		drawBoard();
+		
+	}
+
+
+	public void playGame() throws InterruptedException {
+		boolean flag = true;
+		int neighbors;
+		while(flag) {
+			flag=false;
+			for(int i = 0; i<this.rows; i++) {
+				for(int j = 0; j<this.column; j++) {
+					neighbors = countNeighbors(i,j);
+					if(neighbors==3 && !isOccupied(i,j)) {
+						flag=true;
+						this.theBoard[i][j] = beingBorn;
+					}
+					
+					if(neighbors >= 4 && isOccupied(i,j)) {
+						flag = true;
+						this.theBoard[i][j] = dying;
+
+					}
+					if(neighbors <= 1 && isOccupied(i,j)) {
+						flag = true;
+						this.theBoard[i][j] = dying;
+
+					}
+
+				}
+			}
+			nextGeneration();
+			drawBoard();
+			Thread.sleep(7000);
+		}
+	}
+
+	private void nextGeneration() {
+		for(int i=0; i<this.rows; i++) {
+			for(int j=0; j<this.column; j++) {
+				if(this.theBoard[i][j] == beingBorn) {
+					this.theBoard[i][j] = occupied;
+				}
+				if(this.theBoard[i][j] == dying) {
+					this.theBoard[i][j] = free;
+				}
+
+			}
+		}
+	}
+
+	//PROVIDED METHODS
+	private void setCanvas(){
+		StdDraw.setXscale(0.0, 10*this.rows);
+		StdDraw.setYscale(0.0, 10*this.column);
+	}
+
+	private void drawBoard(){
+		int x, y;
+
+		for(int i=0; i< this.rows; i++){
+			for(int j=0; j< this.column; j++){
+				if(this.isOccupied(i, j)) 
+					StdDraw.setPenColor( StdDraw.BLUE);
+				else
+					StdDraw.setPenColor( StdDraw.WHITE);
+
+				x = j*10+5;
+				y = (10*(this.rows-i)) - 5;
+
+				StdDraw.filledSquare( x, y, 5);
+			}//inner
+		}
+	}// end drawBoard
+}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+public class testerLife {
+
+	public static void main(String[] args) throws InterruptedException {
+		Scanner keyboard = new Scanner(System.in);
+		System.out.println("Please enter the data file containing the information to play the game.");
+		String filename = keyboard.nextLine();
+		boolean flag = false;
+		do {
+			try {
+				Scanner inputFile = new Scanner(new File(filename));
+				int scannerRow = inputFile.nextInt();
+				int scannerColumn = inputFile.nextInt();
+				keyboard.close();
+				Life tester = new Life(scannerRow, scannerColumn);
+				tester.fillBoard(inputFile);
+				tester.playGame();
+				flag = true;
+			} catch (FileNotFoundException e) {
+				System.out.println("The data file you have entered is not valid, please try again.");
+				filename = keyboard.nextLine();
+				
+				flag=false;
+			}
+		} while(!flag);
+
+
+	}
+}
+

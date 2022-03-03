@@ -1,0 +1,153 @@
+import java.util.Arrays;
+
+public class MyString {
+	private char[] charArray;
+
+	public MyString(char[] original) {
+		this.charArray = new char[original.length];
+		int size = original.length;
+		for (int i = 0; i < size; i++) {
+			charArray[i] = original[i];
+		}
+	}
+
+	public MyString(String original) {
+		this.charArray = original.toCharArray();
+	}
+
+	public MyString(MyString original) {
+		this.charArray = new char[original.length()];
+		for (int i = 0; i < charArray.length; i++) {
+			charArray[i] = original.charAt(i);
+		}
+		// always need a for loop to make a deep copy then transfer the information into
+		// that copy
+	}
+
+	public int length() {
+		return this.charArray.length;
+	}
+
+	public char charAt(int index) {
+		if (index < 0 || index > charArray.length - 1) {
+			throw new IndexOutOfBoundsException("Message");
+		} else {
+			return this.charArray[index];
+		}
+	}
+
+	public MyString concat(MyString otherString) {
+		char[] concatOutput = new char[this.length() + otherString.length()];
+		for (int i = 0; i < this.length(); i++) {
+			concatOutput[i] = this.charArray[i];
+		}
+
+		for (int j = 0; j < otherString.length(); j++) {
+			concatOutput[j + length()] = otherString.charArray[j];
+		}
+		return new MyString(concatOutput);
+
+	}
+
+	public int indexOf(char ch) {
+		for (int i = 0; i < this.length(); i++) {
+			if (charArray[i] == ch) {
+				return i;
+			}
+		}
+		return -1;
+
+	}
+
+	public int indexOf(char ch, int fromIndex) {
+		for (int i = fromIndex; i < this.length(); i++) {
+			if (charArray[i] == ch) {
+				return i;
+			}
+
+		}
+		return -1;
+	}
+
+	public MyString replace(char target, char replacement) {
+		char[] newArray = new char[this.charArray.length];
+		for (int i = 0; i < this.length(); i++) {
+			if (charArray[i] == target) {
+				newArray[i] = replacement;
+			}
+			else
+				newArray[i]= charArray[i];	
+		}
+		return new MyString(newArray);
+	}
+
+	public MyString substring(int beginIndex) {
+		char[] temp = new char[charArray.length - beginIndex];
+		for (int i = 0; i < temp.length; i++) {
+			temp[i] = charArray[beginIndex + i];
+		}
+
+		return new MyString(temp);
+	}
+
+	public MyString substring(int beginIndex, int endIndex) {
+		char[] tempA = new char[endIndex - beginIndex];
+		for (int i = 0; i < tempA.length; i++) {
+			tempA[i] = this.charArray[beginIndex + i];
+		}
+
+		return new MyString(tempA);
+	}
+
+	public MyString toUpperCase() {
+		char[] newArray = new char[this.charArray.length];
+		for (int i = 0; i < this.charArray.length; i++) {
+			if (Character.isLowerCase(this.charArray[i])) { 
+				newArray[i] = (char) (this.charArray[i] - 32);
+			}
+			else
+				newArray[i] = this.charArray[i];
+		}
+		return new MyString(newArray);
+	}
+
+	public MyString toLowerCase() {
+		char[] newArray = new char[this.charArray.length];
+		for (int i = 0; i < this.charArray.length; i++) {
+			if (Character.isUpperCase(this.charArray[i])) { 
+				newArray[i] = (char)(this.charArray[i] + 32);
+			}
+			else
+				newArray[i] = this.charArray[i];
+			
+		}
+		return new MyString( newArray);
+	}
+
+		public boolean equals(MyString anObject) {
+			char[] anArray = anObject.charArray;
+			return Arrays.equals(charArray, anArray);
+		}
+
+		@Override
+		public String toString() {
+			String original = new String(charArray);
+
+			return original;
+		}
+
+		public int compareTo(MyString anotherString) {
+
+			int x = 0;
+			for (int i = 0; i < this.charArray.length && i < anotherString.length() && x == 0; i++) {
+				x = (int)this.charArray[i] - (int)anotherString.charArray[i];
+
+			}
+			if (x == 0 && (this.charArray.length != anotherString.charArray.length)) {
+				x = this.charArray.length - anotherString.charArray.length;
+			
+			}
+			return x;
+
+		}
+	}

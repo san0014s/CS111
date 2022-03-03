@@ -1,0 +1,112 @@
+/*
+ * Name: Steven Navarro
+ * Lab Assignment: Lab 3
+ * Lab Instructor: Branson Beach
+ * Date: 1/28/2020
+ */
+public class Clock {
+	int hours;
+	int minutes;
+	int seconds;
+
+	public static final int SECONDS_PER_MINUTES = 60;
+	public static final int MINUTES_PER_HOURS = 60;
+	public static final int HOURS_PER_DAYS = 24;
+
+
+	public Clock() {
+		hours = 0;
+		minutes = 0;
+		seconds = 0;
+
+	}//end default constructor
+
+	public Clock(int hr, int min, int sec) {
+		this.hours=hr;
+		this.minutes=min;
+		this.seconds=sec;
+	}//end of non default
+
+	public void setTime(int hr, int min, int sec) {
+
+		if (0 <= hr && hr < 24)
+			hours = hr;
+		else
+			hr = 0;
+
+		if (0 <= min && min < 60)
+			minutes = min;
+		else
+			min = 0;
+
+		if (0 <= sec && sec < 60)
+			seconds = sec;
+		else
+			seconds = 0;
+
+	}
+
+	public int getHours() {
+		return this.hours;
+	}
+
+	public int getMinutes() {
+		return this.minutes;
+	}
+
+	public int getSeconds() {
+		return this.seconds;
+	}
+
+	public void incrementSecond() {
+		seconds++;
+		if(seconds >= SECONDS_PER_MINUTES) {
+			seconds = 0;
+			incrementMinute();
+		}
+	}
+	public void incrementMinute() {
+		minutes++;
+		if(minutes >= MINUTES_PER_HOURS){
+			minutes = 0;
+			incrementHour();
+		}
+	}
+
+	public void incrementHour() {
+		hours++;
+		if(hours >= HOURS_PER_DAYS) {
+			hours = 0;
+		}
+
+	}
+	public void incrementSecondsBy(int count) {
+		for(int i = 0; i<count;i++) {
+			incrementSecond();
+		}
+	}
+
+	public void incrementMinuteBy(int count) {
+		for(int i = 0; i<count;i++) {
+			incrementMinute();
+		}
+	}
+	public void incrementHourBy(int count) {
+		for(int i = 0; i<count;i++) {
+			incrementHour();
+		}
+	}
+	
+	public boolean equals(Clock clock) {
+		return this.hours == clock.hours && this.minutes == clock.minutes && this.seconds == clock.seconds;
+		
+
+	}
+
+	public String toString() {
+		return String.format("%02d:%02d:%02d", (Integer)hours, minutes, seconds);
+
+	}
+
+}
+

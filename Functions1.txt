@@ -1,0 +1,247 @@
+import java.util.Arrays;
+
+public class Project1Functions implements Project1FunctionsInterface {
+
+	@Override
+	public String swapHalves(String line) {
+		int halfPoint = line.length()/2;
+		int endIndex = line.length();
+		String firstHalf = line.substring(0, halfPoint);
+		String secondHalf = line.substring(halfPoint, endIndex);
+		System.out.println(secondHalf + firstHalf);
+		return line;
+
+	}
+
+	@Override
+	public int countVowels(String line) {
+		int vowels = 0;
+		for(int i = 0; i < line.length(); i++)
+			if(line.charAt(i) == 'a')
+				vowels++;
+			else if(line.charAt(i) == 'e')
+				vowels++;
+			else if(line.charAt(i) == 'i')
+				vowels++;
+			else if(line.charAt(i) == 'o')
+				vowels++;
+			else if(line.charAt(i) == 'u')
+				vowels++;
+		return vowels;
+
+	}
+
+	@Override
+	public int getMax(int[] array) {
+		int maxValue;
+		maxValue = array[0];
+		for(int i =1; i < array.length; i++) {
+			if(array[i] > maxValue) {
+				maxValue = array[i];
+			}
+		}
+
+
+		return maxValue;
+	}
+
+	@Override
+	public boolean isPalindrome(String string) {
+		if(string.length()==0||string.length()==1) {
+			return true;
+		}
+		if(string.charAt(0) == string.charAt(string.length()-1)) {
+			return isPalindrome(string.substring(1, string.length()-1));
+		}
+		return false;
+	}
+
+	@Override
+	public int factorial(int n) {
+		if (n==0)
+			return 1;
+		return n*factorial(n-1);
+	}
+
+	@Override
+	public int[] getFibonacci(int number) {
+		int[] fibonacci = new int[number];
+		for(int i= 0; i < fibonacci.length; i++ )
+		{
+			if(i <= 1)
+				fibonacci[i] = i;
+			else
+				fibonacci[i] = fibonacci[i-1] + fibonacci[i -2];
+		}
+		return fibonacci;
+	}
+
+	@Override
+	public double getC(int a, int b) {
+
+		double c = Math.hypot(a, b);
+
+		return c;
+	}
+
+	@Override
+	public String getWeather(boolean rain, int temperature) {
+		String weather = null;
+		if (rain & temperature > 30) {
+			weather = "Rainy";
+		}
+		else if (!rain & temperature > 30) {
+			weather = "Sunny";
+		}
+		else if (rain & temperature <= 30) {
+			weather = "Snowy";
+		}
+		else if (!rain & temperature <= 30) {
+			weather = "Chilly";
+		}
+		return weather;
+	}
+
+	@Override
+	public boolean containsChar(String string, char x) {
+
+		if( string.indexOf(x) == -1) {
+			return false;
+
+		}
+		else {
+			return true;
+		}
+
+
+
+	}
+
+	@Override
+	public int[][] fillArray(int[][] array) {
+			
+		for (int i = 0; i< array.length; i++) {
+										
+				if ( i % 2 != 0) {
+					for (int j = 0; j < array[0].length;j++) {
+						array[i][j] = 1;
+					}
+				}
+				else {
+					for (int j = 0; j < array[0].length;j++) {
+						array[i][j] = 0;
+					}
+				}
+			
+		}
+		return array;
+		
+		}
+
+		@Override
+		public void printOdd(int[] array) {
+			for (int i = 0; i < array.length; i ++) {
+				if(array[i] % 2 != 0) {
+					System.out.print(array[i]);
+				}
+			}
+		}
+
+		@Override
+		public String reverseString(String string) {
+			String reverse = "";        
+
+			for(int i = string.length() - 1; i >= 0; i--)
+			{
+				reverse = reverse + string.charAt(i);
+			}
+
+			return reverse;
+		}
+
+		@Override
+		public int[] swap(int[] array, int x, int y) {
+			int temp = 0;
+
+			temp = array[x];
+			array[x] = array[y];
+			array[y] = temp;
+			return array;
+		}
+
+		@Override
+		public int reverseInt(int number) {
+			int reverse = 0; 
+
+			while(number != 0)
+			{
+				reverse = reverse * 10;
+				reverse = reverse + number%10;
+				number = number/10;
+			}
+
+			return reverse;
+		}
+
+		@Override
+		public int[] rotateArray(int[] array) {
+
+			int x = 1;
+			
+			for (int i = 0; i < x; i++) {
+				int j;
+				int lastToFirst;
+				
+				lastToFirst = array[array.length - 1];
+				
+				for(j = array.length - 1; j > 0; j--) {
+					array[j] = array[j-1];
+				}
+				
+				array[0] = lastToFirst;
+			}
+
+			return array;
+		}
+
+		public static void main(String[] args) {
+			int[] array = {2,7,10,4,87,12,23};
+			int mark = 1234;
+			int[][] twoD = new int [5][8];
+			Project1Functions singleton = new Project1Functions();
+			singleton.swapHalves("potato");
+			System.out.println();
+			System.out.print(singleton.countVowels("potato"));
+			System.out.println();
+			System.out.println(singleton.getMax(array));
+			System.out.print(singleton.isPalindrome("racecar"));
+			System.out.println();
+			System.out.print(singleton.factorial(4));
+			System.out.println();
+			System.out.print(singleton.getC(4,3));
+			System.out.println();
+			System.out.print(singleton.getWeather(false,37));
+			System.out.println();
+			System.out.print(singleton.containsChar("Hello",'v'));
+			System.out.println();
+			singleton.printOdd(array);
+			System.out.println();
+			System.out.print(singleton.reverseString("Hello"));
+			System.out.println();
+			System.out.print(singleton.swap(array, 3, 5));
+			System.out.print(array[3] + " " + array[5]);
+			singleton.rotateArray(array);
+			System.out.println();
+			System.out.print(array[0] + " " + array [1] );
+			System.out.println();
+			System.out.print(singleton.reverseInt(mark));
+			System.out.println();
+			for(int i = 0; i < array.length; i++) {
+				System.out.print(array[i] + " ");
+			}
+			System.out.println();
+			singleton.fillArray(twoD);
+			System.out.println(Arrays.deepToString(twoD));
+		}
+
+	}

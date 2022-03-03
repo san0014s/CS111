@@ -1,0 +1,165 @@
+
+public class Stack <T> implements StackInterface<T>{
+	private T[] elements;
+	private int maxSize;
+	private int currentSize;
+	private final static int defaultSize = 10;
+
+	public Stack() {
+		maxSize = defaultSize;
+		elements =(T[]) new Object[maxSize];
+		currentSize = 0;
+	}
+	public Stack(int size) {
+		maxSize=size;
+		elements =(T[]) new Object[maxSize];
+		currentSize = 0;
+	}
+
+	@Override
+	public boolean isFull() {
+		if(currentSize == maxSize) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isEmpty() {
+		if( currentSize == 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public void push(T newValue) {
+		if(!isFull()) {
+			elements[currentSize]=  newValue;//might need to add or subtract
+			currentSize++;
+		}
+		else {
+			throw new StackException("Array is full.");
+		}
+	}
+
+	@Override
+	public T pop() {
+		T temp;
+		if(!isEmpty()) {
+			temp = elements[currentSize-1];
+			currentSize--;
+		}
+		else {
+			throw new StackException("Array is empty.");
+		}
+		return temp;
+	}
+
+	@Override
+	public int size() {
+		return currentSize;
+	}
+
+	@Override
+	public int getMaxSize() {
+		return maxSize;
+	}
+
+	public String toString() {
+		String s = "[";
+		for(int i = currentSize-1; i >=0; i--) {
+			s += elements[i] + ", ";
+
+		}
+		s = s.substring(0, s.length()-2);
+		s += "]";
+		return s;
+	}
+
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+public class Tester extends Stack {
+
+	public static void main(String[] args) {
+		Stack<Integer> aStack = new Stack<Integer>(10);
+
+
+		aStack.push(1);
+		aStack.push(2);
+		aStack.push(3);
+		aStack.push(4);
+		aStack.push(5);
+		aStack.push(6);
+		aStack.push(7);
+		aStack.push(8);
+		aStack.push(9);
+		aStack.push(10);
+		System.out.print(aStack);
+		System.out.println();
+		printLast(aStack);
+		System.out.println(aStack);
+		reverse(aStack);
+		System.out.println();
+		System.out.println();
+		deleteAll(aStack,7);
+		System.out.println(aStack);
+		popAndDiscard(aStack,2);
+		System.out.println(aStack);
+
+
+	}
+	public static void printLast(Stack aStack) {
+		Stack copy = aStack;
+		reverse(copy);
+		Object temp = copy.pop();
+		System.out.println(temp);
+		copy.push(temp);
+	}
+
+	public static void reverse(Stack aStack) {
+		Object[] helpArray= new Object[aStack.size()];
+
+		for(int i =0; i< helpArray.length;i++) {
+			helpArray[i]= aStack.pop();
+
+		}
+		for(int i =0; i< helpArray.length;i++) {
+			aStack.push(helpArray[i]);
+		}
+
+	}
+
+	public static void deleteAll(Stack aStack, Object searchValue) {
+		Stack copy = new Stack(aStack.getMaxSize());
+		int numElements = aStack.size();
+		int numElements2 = numElements;
+		Object[] helpArray= new Object[aStack.size()];
+
+		for(int i =0; i< numElements;i++) {
+			helpArray[i]= aStack.pop();
+		}
+
+
+		for(int i = numElements-1; i>=0;i--){
+			if(helpArray[i] != searchValue) { 
+				aStack.push(helpArray[i]);
+			}
+		}
+	}
+	public static void popAndDiscard(Stack aStack, int value) {
+		for(int i= 0; i<value; i++) {
+			aStack.pop();
+
+
+		}
+	}
+
+
+
+}
